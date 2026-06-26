@@ -3,6 +3,22 @@
 Public exemplar for the SIA (Self-Improvement Agent) harness: Meta → Target → Feedback
 loops with public/private task splits and canonical generation artifacts.
 
+## Run via the template monorepo
+
+This exemplar lives at `projects/templates/template_sia/` in the public
+[docxology/template](https://github.com/docxology/template) repository.
+**Tests, analysis, PDF rendering, and CI all run through that monorepo** —
+clone it, run `uv sync` at the repository root, then:
+
+```bash
+./run.sh --project templates/template_sia --pipeline --core-only
+# or: uv run python scripts/execute_pipeline.py --project templates/template_sia --core-only
+```
+
+Several exemplars also publish standalone GitHub/Zenodo releases for citation;
+those mirrors are outputs of this pipeline. The monorepo remains the canonical
+build and render surface.
+
 ## When to use this template
 
 Use this template when you need a **self-improvement-agent evaluation
@@ -41,3 +57,10 @@ Default runs replay fixtures under `src/fixtures/recorded_generations/`. Pass
 - [`AGENTS.md`](AGENTS.md) — module map and contracts
 - [`docs/quickstart.md`](docs/quickstart.md) — fork and extend
 - [`../../../infrastructure/sia/README.md`](../../../infrastructure/sia/README.md) — Layer 1 API
+
+## Template integrity
+
+- Forward backlog: [`TODO.md`](TODO.md).
+- Copy-and-customize config: [`manuscript/config.yaml.example`](manuscript/config.yaml.example).
+- Project validation: `uv run pytest projects/templates/template_sia/tests/ --cov=projects/templates/template_sia/src --cov-fail-under=90`.
+- Repo drift validation: `uv run python scripts/check_template_drift.py --strict`.
