@@ -13,12 +13,13 @@ Decision memory and verifier hardening follow [`docs/rules/memory_and_decision_r
 
 | Path | Role |
 | --- | --- |
-| `src/loop.py` | `run_sia_loop_project()` → `infrastructure.sia.run_sia_loop` |
+| `src/loop.py` | Compatibility re-export shim → `scripts/sia_loop_impl.py` (the real orchestration; not a `src/`-only implementation) |
 | `src/loop_config.py` | Reads `sia:` block from `manuscript/config.yaml` |
-| `src/reports.py` | Loop markdown report + `${SIA_*}` manuscript variables |
+| `src/reports.py` | Loop markdown report + `{{SIA_*}}` manuscript variables |
 | `src/fixtures/recorded_generations/` | Fixture replay for gens 1–3 (default CI) |
 | `tasks/mini_classify/` | Public/private task split + `evaluate.py` |
 | `scripts/run_sia_loop.py` | Thin orchestrator (`--project-root`, `--live-sia`) |
+| `scripts/sia_loop_impl.py` | `run_sia_loop_project()` / `build_run_config()` → `infrastructure.sia.run_sia_loop`; re-exported by `src/loop.py` for backward compatibility |
 | `scripts/z_generate_manuscript_variables.py` | Post-analysis token hydration |
 
 ## Run modes
@@ -53,7 +54,7 @@ The harness exposes two validation surfaces:
 
 ```bash
 uv run pytest projects/templates/template_sia/tests/ -m "not requires_ollama" -v
-uv run python scripts/01_run_tests.py --project templates/template_sia --project-only
+uv run python scripts/pipeline/stage_01_test.py --project templates/template_sia --project-only
 ```
 
 ## See also
