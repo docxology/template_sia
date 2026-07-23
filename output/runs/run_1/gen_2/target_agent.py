@@ -8,10 +8,11 @@ import csv
 from collections import Counter
 from pathlib import Path
 
-THRESHOLD = 0.5
+THRESHOLD = 0.3
 
 
 def majority_label(train_csv: Path) -> str:
+    """Process majority label."""
     counts: Counter[str] = Counter()
     with train_csv.open(newline="", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
@@ -20,6 +21,7 @@ def majority_label(train_csv: Path) -> str:
 
 
 def main() -> int:
+    """CLI entry point."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset_dir", type=Path, required=True)
     parser.add_argument("--working_dir", type=Path, required=True)

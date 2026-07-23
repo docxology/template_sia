@@ -94,14 +94,17 @@ uv run python scripts/pipeline/stage_01_test.py --project templates/template_sia
 
 Default runs replay fixtures under `src/fixtures/recorded_generations/`. Pass
 `--live-sia` for bounded subprocess execution.
+The reusable Layer-2 adapter is `src/loop.py`; `scripts/run_sia_loop.py` is a
+thin CLI that parses flags, calls that adapter, and prints artifact paths.
 
 > **Live mode is a deterministic stub.** `--live-sia` runs the *reference* agent
 > as a bounded subprocess and records its evaluation, but it does **not** mutate
 > target code and uses **no sandbox**: the `improvement.md` feedback note is
 > illustrative and is never applied, so the target agent is identical across
-> generations. Self-improvement *across generations* is demonstrated only via
-> **fixture replay**. This exemplar shows the harness mechanics, not autonomous
-> live code modification.
+> generations. Fixture replay contains genuinely executed threshold variants,
+> but this toy dataset's separation gap makes all three score 1.0; the flat
+> trace is a robustness control, not evidence of improvement. This exemplar
+> shows harness mechanics, not autonomous live code modification.
 
 ## Documentation
 

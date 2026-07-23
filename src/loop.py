@@ -1,4 +1,10 @@
-"""SIA harness orchestration — the loop implementation lives here in src/."""
+"""Project adapter for running the shared SIA harness.
+
+Layer 1 owns the generation state machine in :mod:`infrastructure.sia`.
+This module owns the template-specific configuration, fixture location, and
+post-run artifact orchestration. CLI parsing and presentation stay in
+``scripts/run_sia_loop.py``.
+"""
 
 from __future__ import annotations
 
@@ -7,16 +13,16 @@ from pathlib import Path
 
 from infrastructure.sia import GenerationArtifacts, RunConfig, run_sia_loop
 
-from src.artifact_manifest import collect_run_artifact_paths, write_artifact_manifest
-from src.figures import write_all_figures
-from src.loop_config import load_sia_settings
-from src.manuscript_variables import save_variables
-from src.reports import write_loop_report
+from .artifact_manifest import collect_run_artifact_paths, write_artifact_manifest
+from .figures import write_all_figures
+from .loop_config import load_sia_settings
+from .manuscript_variables import save_variables
+from .reports import write_loop_report
 
 
 @dataclass(frozen=True)
 class SiaLoopResult:
-    """Result of a completed SIA loop."""
+    """Result of a completed project-level SIA loop."""
 
     artifacts: tuple[GenerationArtifacts, ...]
     run_summary: Path
@@ -26,12 +32,12 @@ class SiaLoopResult:
 
 
 def fixtures_dir(project_root: Path) -> Path:
-    """Return recorded generation fixtures."""
+    """Return the directory containing recorded generation fixtures."""
     return project_root / "src" / "fixtures" / "recorded_generations"
 
 
 def build_run_config(project_root: Path, *, live: bool | None = None) -> RunConfig:
-    """Build infrastructure RunConfig from project settings."""
+    """Build the shared harness configuration from project-owned settings."""
     project_root = project_root.resolve()
     settings = load_sia_settings(project_root)
     effective_live = settings.live if live is None else live
@@ -48,7 +54,7 @@ def build_run_config(project_root: Path, *, live: bool | None = None) -> RunConf
 
 
 def run_sia_loop_project(project_root: Path, *, live: bool | None = None) -> SiaLoopResult:
-    """Run the SIA harness for this exemplar."""
+    """Run the shared harness and write this exemplar's derived artifacts."""
     project_root = project_root.resolve()
     settings = load_sia_settings(project_root)
     config = build_run_config(project_root, live=live)

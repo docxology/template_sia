@@ -37,8 +37,8 @@ flowchart TB
 | Layer | Location | Owns |
 | --- | --- | --- |
 | Layer 1 | `infrastructure/sia/` | Task validation, evaluation subprocess, context ledger, generation state machine |
-| Layer 2 | `projects/templates/template_sia/src/` | Project config, fixture paths, manuscript variables, task-specific reference agent |
-| Orchestration | `scripts/` | CLI flags (`--live-sia`), stdout paths for manifest collection; `run_sia_loop.py` is a thin caller that imports `build_run_config()`/`run_sia_loop_project()` from `src/loop.py`, where the orchestration lives |
+| Layer 2 | `projects/templates/template_sia/src/` | Project config, fixture paths, `RunConfig` adapter, project artifact orchestration, manuscript variables, task-specific reference agent |
+| CLI | `scripts/` | Parse `--project-root` / `--live-sia`, call `src.loop.run_sia_loop_project()`, and print output paths |
 
 ## Generation artifact tree
 
