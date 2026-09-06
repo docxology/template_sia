@@ -51,7 +51,9 @@ def _load_yaml_mapping(path: Path) -> dict[str, Any]:
 
 def load_sia_settings(project_root: Path) -> SiaLoopSettings:
     """Read the namespaced SIA block, with legacy-root compatibility."""
-    config_path = project_root / "manuscript" / "config.yaml"
+    config_path = project_root / "docs" / "manuscript" / "config.yaml"
+    if not config_path.is_file():
+        config_path = project_root / "manuscript" / "config.yaml"
     raw = _load_yaml_mapping(config_path)
     project_raw = raw.get("project_config")
     project_block = project_raw if isinstance(project_raw, dict) else {}
@@ -90,7 +92,9 @@ def _parse_approval_mode(value: Any) -> ApprovalMode:
 
 def load_paper_title(project_root: Path) -> str:
     """Return paper title from config."""
-    config_path = project_root / "manuscript" / "config.yaml"
+    config_path = project_root / "docs" / "manuscript" / "config.yaml"
+    if not config_path.is_file():
+        config_path = project_root / "manuscript" / "config.yaml"
     raw = _load_yaml_mapping(config_path)
     paper = raw.get("paper") or {}
     return str(paper.get("title", "template_sia"))

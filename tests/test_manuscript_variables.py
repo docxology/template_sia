@@ -23,7 +23,7 @@ def test_manuscript_tokens_cover_manuscript_files(
     run_sia_loop_project(project, live=False)
     variables = compute_variables(project)
     tokens: set[str] = set()
-    for path in (project / "manuscript").glob("[0-9][0-9]_*.md"):
+    for path in (project / "docs" / "manuscript").glob("[0-9][0-9]_*.md"):
         tokens.update(re.findall(r"\{\{([A-Z0-9_]+)\}\}", path.read_text(encoding="utf-8")))
     assert tokens
     missing = tokens - set(variables)

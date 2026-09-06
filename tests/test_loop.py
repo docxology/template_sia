@@ -34,7 +34,7 @@ def test_settings_reject_unknown_approval_mode() -> None:
 def test_settings_reject_string_true_false_coercion(tmp_path: Path, copy_project_sandbox: Copy):
     project = tmp_path / "project"
     copy_project_sandbox(project)
-    config = project / "manuscript" / "config.yaml"
+    config = project / "docs" / "manuscript" / "config.yaml"
     config.write_text(config.read_text(encoding="utf-8").replace("live: false", 'live: "false"'), encoding="utf-8")
 
     assert load_sia_settings(project).live is False

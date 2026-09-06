@@ -67,7 +67,7 @@ def test_config_default_resolves_to_fixture_replay() -> None:
 def test_config_live_true_resolves_to_live_mode(tmp_path: Path, copy_project_sandbox: Copy) -> None:
     """A project whose config sets ``sia.live: true`` resolves to live mode."""
     project = _fresh_sandbox(tmp_path, copy_project_sandbox)
-    cfg_path = project / "manuscript" / "config.yaml"
+    cfg_path = project / "docs" / "manuscript" / "config.yaml"
     cfg_path.write_text(
         cfg_path.read_text(encoding="utf-8").replace("live: false", "live: true"),
         encoding="utf-8",

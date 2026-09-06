@@ -4,7 +4,7 @@
 
 1. **Thin orchestrators.** `scripts/*.py` parse argv, call `src/` functions, print output paths. No business logic in scripts.
 
-2. **Infrastructure imports in Layer 2.** `src/` may import `infrastructure.sia` and `infrastructure.core.config`. Avoid importing `infrastructure.rendering` package init from project venv paths (use lazy load in `reports.write_resolved_manuscript_tree`).
+2. **Infrastructure imports in Layer 2.** `src/` may import `infrastructure.sia` and `infrastructure.core.config`. Avoid importing `infrastructure.rendering` package init from project venv paths (import `infrastructure.rendering.manuscript_injection.write_resolved_manuscript_tree` directly, as `scripts/z_generate_manuscript_variables.py` does).
 
 3. **Typed settings.** Use `SiaLoopSettings` dataclass from `loop_config.py`; do not scatter raw YAML access.
 

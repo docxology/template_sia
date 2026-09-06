@@ -21,8 +21,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Markdown sections that reference each figure (single source of truth for captions).
 _MANUSCRIPT_SECTIONS = (
-    PROJECT_ROOT / "manuscript" / "02_methodology.md",
-    PROJECT_ROOT / "manuscript" / "03_results.md",
+    PROJECT_ROOT / "docs" / "manuscript" / "02_methodology.md",
+    PROJECT_ROOT / "docs" / "manuscript" / "03_results.md",
 )
 
 Copy = Callable[[Path], Path]
