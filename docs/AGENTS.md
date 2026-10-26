@@ -38,12 +38,12 @@ Agents must read [`agent_instructions.md`](agent_instructions.md) before editing
 
 ```bash
 uv run python scripts/pipeline/stage_01_test.py --project templates/template_sia --project-only
-uv run python scripts/runner/execute_pipeline.py --project templates/template_sia --core-only --skip-infra
+uv run python scripts/runner/execute_pipeline.py --project templates/template_sia --mode core --skip-infra
 grep -r "unittest.mock\|MagicMock\|@patch" projects/templates/template_sia/tests/ || echo "Clean"
 ```
 
 ## See also
 
 - [`../AGENTS.md`](../AGENTS.md)
-- [`../manuscript/AGENTS.md`](../manuscript/AGENTS.md)
+- [`manuscript/AGENTS.md`](manuscript/AGENTS.md)
 - [`../../../../infrastructure/sia/SKILL.md`](../../../../infrastructure/sia/SKILL.md)

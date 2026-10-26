@@ -75,7 +75,7 @@ To regenerate this exemplar from the public monorepo:
 git clone https://github.com/docxology/template
 cd template
 uv sync
-./run.sh --project templates/template_sia --pipeline --core-only
+./run.sh --project templates/template_sia --pipeline --mode core
 uv run python scripts/pipeline/stage_04_validate.py --project templates/template_sia
 uv run python scripts/pipeline/stage_05_copy.py --project templates/template_sia
 ```
