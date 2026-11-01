@@ -11,11 +11,11 @@ splits to detect overfitting, deterministic fixture replay for testability,
 and fail-closed loop validation. It demonstrates the harness *mechanics* —
 not autonomous live code modification (see the honesty note below). For
 agent-team coordination mechanisms see
-[`template_autoscientists`](../template_autoscientists/); for a bounded
+[`template_autoscientists`](https://github.com/docxology/template/blob/main/projects/templates/template_autoscientists); for a bounded
 AutoResearch loop see
-[`template_autoresearch_project`](../template_autoresearch_project/). Full
+[`template_autoresearch_project`](https://github.com/docxology/template/blob/main/projects/templates/template_autoresearch_project). Full
 roster:
-[`projects/AGENTS.md`](../../AGENTS.md#permanent-canonical-exemplars).
+[`projects/AGENTS.md`](https://github.com/docxology/template/blob/main/projects/AGENTS.md#permanent-canonical-exemplars).
 
 ## Publication and rendering
 
@@ -110,7 +110,7 @@ thin CLI that parses flags, calls that adapter, and prints artifact paths.
 
 - [`AGENTS.md`](AGENTS.md) — module map and contracts
 - [`docs/quickstart.md`](docs/quickstart.md) — fork and extend
-- [`../../../infrastructure/sia/README.md`](../../../infrastructure/sia/README.md) — Layer 1 API
+- [`../../../infrastructure/sia/README.md`](https://github.com/docxology/template/blob/main/infrastructure/sia/README.md) — Layer 1 API
 
 ## Template integrity
 
