@@ -1,36 +1,27 @@
-# Rendering pipeline — template_sia
+# Rendering pipeline
 
-## Phases
+Use the [pinned runner commands](quickstart.md) to regenerate these outputs:
 
-```mermaid
-flowchart LR
-  A[Stage 02 Analysis] --> B[z_generate_manuscript_variables]
-  B --> C[output/manuscript/]
-  C --> D[Stage 05 PDF render]
-  D --> E[output/pdf/template_sia_combined.pdf]
-```
+1. The project analysis script replays the configured fixture generations and
+   writes the run summary, report, and registered figures.
+2. Stage 03 invokes `scripts/z_generate_manuscript_variables.py` automatically.
+   The hook uses `project_config.sia.run_id` to find the run summary, writes the
+   variables JSON, and resolves placeholders from the [authored manuscript](manuscript/README.md)
+   into `output/manuscript/`.
+3. Stage 03 builds combined PDF and HTML with the bibliography and four figures.
+4. Stage 04 validates the outputs and writes the report and provenance receipts.
 
-| Phase | Script | Output |
-| --- | --- | --- |
-| 1. Loop | `scripts/run_sia_loop.py` | `output/runs/run_1/gen_*/`, `output/reports/sia_loop_report.md` |
-| 2. Variables | `scripts/z_generate_manuscript_variables.py` | `output/data/manuscript_variables.json`, `output/manuscript/*.md` |
-| 3. Render | root `scripts/pipeline/stage_03_render.py` | `output/pdf/template_sia_combined.pdf` |
-| 4. Copy | root `scripts/pipeline/stage_05_copy.py` | `output/templates/template_sia/` |
+## Configuration
 
-## Config controls
-
-`docs/manuscript/config.yaml`:
+[Manuscript configuration](manuscript/config.yaml) contains:
 
 | Block | Keys | Effect |
 | --- | --- | --- |
-| `sia:` | `task_name`, `max_generations`, `live`, `target_timeout_sec`, `llm_model` | Loop behaviour (registered schema extension) |
-| `paper:` | `title`, `version` | Title page and tokens |
-| `publication:` | `doi`, `year` | Publishing metadata |
+| `project_config.sia` | `task_name`, `run_id`, `max_generations` | Selects the task, run directory, and generation count |
+| `project_config.sia` | `target_timeout_sec`, `llm_model` | Sets the live subprocess timeout and optional local feedback model |
+| `project_config.sia` | `live`, `approval_mode` | Controls the default Python adapter mode and records the approval contract |
+| `paper`, `publication`, `render.formats` | Title, version, DOI metadata, format toggles | Sets the paper identity and enabled output formats |
 
-## Full pipeline
-
-```bash
-uv run python scripts/runner/execute_pipeline.py --project templates/template_sia --mode core --skip-infra
-```
-
-Analysis must complete before variables generation — `z_generate_manuscript_variables.py` fails fast if `output/runs/run_1/run_summary.json` is missing.
+The CLI selects live execution with `--live-sia`. The default command uses
+fixture replay. The manuscript reports metrics from the last run at its
+configured run ID. Use replay before rendering the paper as shipped.

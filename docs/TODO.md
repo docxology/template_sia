@@ -1,7 +1,7 @@
 # template_sia TODO
 
 This backlog is future-only. Completed validation and dated review evidence are preserved in
-[`docs/maintenance/exemplar-backlog-history.md`](../../../docs/maintenance/exemplar-backlog-history.md)
+[`docs/maintenance/exemplar-backlog-history.md`](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/maintenance/exemplar-backlog-history.md)
 or in source-owned generated receipts. Each active row must retain a stable ID, size, dependency,
 next action, proving artifact, acceptance command, and negative control; absence of an owner or external receipt
 keeps a capability blocked rather than silently promoting it.

@@ -1,44 +1,64 @@
-# Quickstart — template_sia
+# Run the SIA exemplar
 
-## From repository root
+The standalone repository ships the project code, task, fixtures, and authored
+manuscript. The harness and renderer come from the pinned Template checkout.
 
-```bash
-# Tests
-uv run python scripts/pipeline/stage_01_test.py --project templates/template_sia --project-only
+## Set up the runner
 
-# Analysis only
-uv run python scripts/pipeline/stage_02_analysis.py --project templates/template_sia
+Install Python 3.15, uv, Pandoc 3.14, matching pandoc-crossref v0.3.26b, and
+XeLaTeX with the [Template TeX packages](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/README.md#L565-L574).
+Set `SIA_CHECKOUT` to the absolute path of this repository. From its parent
+directory, run:
 
-# Core pipeline (tests → analysis → PDF → validate → copy)
-uv run python scripts/runner/execute_pipeline.py --project templates/template_sia --mode core --skip-infra
+```sh
+git clone https://github.com/docxology/template.git sia-template-runner
+cd sia-template-runner
+git checkout --detach 87704feae0a4490ef7dad9c931d268e8c30273c2
+uv sync --locked --python 3.15
+project=projects/working/template_sia
+mkdir -p projects/working
+git -C "$SIA_CHECKOUT" worktree add --detach "$PWD/$project" HEAD
+mv "$project/output" "$(mktemp -d)/published-output"
 ```
 
-## From project directory
+Use the disposable worktree for tests and regeneration. This keeps the
+tracked publication snapshot in your original checkout available for comparison.
 
-```bash
-cd projects/templates/template_sia
-uv run python scripts/run_sia_loop.py
-uv run python scripts/z_generate_manuscript_variables.py
+## Verify and render
+
+From the pinned Template checkout, use the default offline test profile,
+validate the public task layout, execute fixture replay, and render.
+
+```sh
+uv run pytest "$project/tests" --cov="$project/src" --cov-fail-under=90
+uv run python -m infrastructure.sia.cli validate "$project/tasks/mini_classify" --json
+uv run python "$project/scripts/run_sia_loop.py"
+uv run python scripts/pipeline/stage_03_render.py --project working/template_sia
+uv run python scripts/pipeline/stage_04_validate.py --project working/template_sia
 ```
 
-## Live mode (optional)
+The replay produces three generations with the same held-out accuracy. The
+selected run and task come from the
+[configuration](manuscript/config.yaml). Inspect the [output inventory](output_conventions.md)
+for run data, figures, manuscript PDF and HTML, and validation receipts.
 
-Requires local Ollama:
+Check authored links from the original checkout:
 
-```bash
-ollama serve
-ollama pull gemma3:4b
-uv run python scripts/run_sia_loop.py --live-sia
+```sh
+lychee --offline README.md STANDALONE.md AGENTS.md 'docs/**/*.md'
+git diff --check
 ```
 
-The LLM model is read from `docs/manuscript/config.yaml` (`project_config.sia.llm_model`), not a CLI flag.
-Set `project_config.sia.llm_model: "gemma3:4b"` in `docs/manuscript/config.yaml` first — it ships empty
-(`llm_model: ""`), and an empty value produces **no LLM feedback note** even with Ollama
-running and a model pulled.
+## Run the local reference classifier
 
-Default pipeline and CI use fixture replay (`live: false` in `docs/manuscript/config.yaml`).
+In the disposable worktree, after retaining any replay outputs you want to
+compare, run:
 
-## Deliverables
+```sh
+uv run python "$project/scripts/run_sia_loop.py" --live-sia
+```
 
-- Combined PDF: `output/templates/template_sia/pdf/template_sia_combined.pdf`
-- Loop report: `projects/templates/template_sia/output/reports/sia_loop_report.md`
+This runs the bundled reference classifier in a subprocess with the configured
+timeout. The default empty `project_config.sia.llm_model` keeps it offline.
+A configured model uses an available local Ollama service for feedback notes.
+The harness copies the same classifier code into each live generation.

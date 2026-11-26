@@ -25,4 +25,4 @@ examples, or generated reports rather than `{{VARIABLE}}` injection.
 2. Re-run the SIA loop and validation after ledger edits.
 3. Do not store generated reports or figures under `data/`.
 
-Quick orientation: [`README.md`](README.md).
+Quick orientation: [`README.md`](../docs/reference/evidence.md).

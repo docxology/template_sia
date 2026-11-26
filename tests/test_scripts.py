@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import sys
@@ -9,6 +10,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 import pytest
+import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 REPO_ROOT = PROJECT_ROOT.parents[2]
@@ -50,6 +52,10 @@ def test_generate_manuscript_variables_script(
     copy_project_sandbox: Callable[[Path], Path],
 ):
     project = copy_project_sandbox(tmp_path / "proj")
+    config_path = project / "docs" / "manuscript" / "config.yaml"
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    config["project_config"]["sia"]["run_id"] = 2
+    config_path.write_text(yaml.safe_dump(config), encoding="utf-8")
     run_proc = subprocess.run(
         [sys.executable, str(project / "scripts" / "run_sia_loop.py"), "--project-root", str(project)],
         cwd=str(REPO_ROOT),
@@ -68,4 +74,6 @@ def test_generate_manuscript_variables_script(
         check=False,
     )
     assert proc.returncode == 0, proc.stderr
-    assert (project / "output" / "data" / "manuscript_variables.json").is_file()
+    variables = project / "output" / "data" / "manuscript_variables.json"
+    assert json.loads(variables.read_text(encoding="utf-8"))["SIA_RUN_ID"] == "2"
+    assert (project / "output" / "manuscript" / "00_abstract.md").is_file()

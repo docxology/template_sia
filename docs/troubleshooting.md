@@ -1,46 +1,33 @@
-# Troubleshooting — template_sia
+# Troubleshooting
 
-```mermaid
-flowchart TD
-  START[Stage failed] --> Q1{Which stage?}
-  Q1 -->|Project tests| T1["pytest template_sia tests"]
-  Q1 -->|Analysis| T2[Run scripts individually]
-  Q1 -->|PDF| T3[Check output manuscript tokens]
-  T2 --> T2A{Which script?}
-  T2A -->|run_sia_loop| F1["Check mini_classify task layout"]
-  T2A -->|z_generate| F2["Missing run_summary — run loop first"]
-  T3 --> F3["Unresolved SIA tokens in output"]
-```
+## Import errors or missing test dependencies
 
-## Project tests fail with `unrecognized arguments: --timeout`
+Run the commands from the [pinned Template checkout](quickstart.md#set-up-the-runner).
+The project imports the shared harness and plotting and rendering dependencies
+from that environment.
 
-Add `pytest-timeout` to project dev dependencies (already in `pyproject.toml`). Run `uv sync --extra dev` inside the project directory.
+## Missing run summary
 
-## `ModuleNotFoundError: No module named 'PIL'`
+Run the replay script before Stage 03. It writes
+`output/runs/run_<run_id>/run_summary.json`. Check that its run ID matches
+`project_config.sia.run_id` in the
+[manuscript configuration](manuscript/config.yaml).
 
-The variables script must not import `infrastructure.rendering` package init. Use `infrastructure.rendering.manuscript_injection.write_resolved_manuscript_tree` (lazy load of `manuscript_injection.py` only, not the package `__init__.py`).
+## Task validation fails
 
-## `Unknown config key 'sia'`
+Check that `data/public/task.md`, `data/private/`, and
+`reference/reference_target_agent.py` are present. Use the CLI layout check in
+the [verification commands](quickstart.md#verify-and-render) for diagnostics.
 
-Expected and harmless when this warning comes from the generic
-`infrastructure.core.config` loader validating `docs/manuscript/config.yaml`
-directly (e.g. via ad hoc scripts or the shared config CLI). `src/loop_config.py`
-reads the `sia:` block itself with a private YAML helper and never registers
-the key with `register_project_schema_extension` — no such call exists in
-this project. To make the shared loader recognize `sia` and silence the
-warning, register the extension (mirroring the pattern in
-`template_gold_refinement/tests/test_config.py`): `register_project_schema_extension("template_sia", {"sia": dict})`.
+## PDF figures or tokens do not resolve
 
-## Analysis: missing `run_summary.json`
+Check the four PNGs and their registry under `output/figures/`. The generated
+variables and manuscript copy live in `output/data/` and `output/manuscript/`.
+Rerun replay and Stage 03 to regenerate them after editing configuration or
+authored sections.
 
-Run `uv run python projects/templates/template_sia/scripts/run_sia_loop.py` before `z_generate_manuscript_variables.py`.
+## Optional model feedback is absent
 
-## Live mode hangs or fails
-
-- Confirm `ollama serve` is running
-- Use `@pytest.mark.requires_ollama` tests locally only
-- Keep `target_timeout_sec` bounded in config
-
-## Drift: missing `.gitignore`
-
-Exemplars must ship `projects/templates/template_sia/.gitignore` and appear in root `.gitignore` allowlist negations.
+The shipped model setting is empty. A configured Ollama model requires a local
+service. The offline classifier runs without it and uses the configured
+`target_timeout_sec` for the target subprocess.

@@ -17,7 +17,7 @@ uv run python scripts/audit/copy_exemplar.py \
 uv run pytest "projects/working/$NEW/tests/" --cov="projects/working/$NEW/src" --cov-fail-under=90
 ```
 
-Private work stays under `projects/working/` (local-only). Promote to `projects/active/` in your private repo when ready to render — see [`docs/maintenance/private-projects-repo.md`](../../../../docs/maintenance/private-projects-repo.md).
+Private work stays under `projects/working/` (local-only). Promote to `projects/active/` in your private repo when ready to render — see [`docs/maintenance/private-projects-repo.md`](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/maintenance/private-projects-repo.md).
 
 ## REQUIRED vs AESTHETIC
 
@@ -59,5 +59,5 @@ state-changing authority auditable rather than inferred from a local test run.
 
 ## See also
 
-- [`../../../../docs/guides/fork-an-exemplar.md`](../../../../docs/guides/fork-an-exemplar.md)
-- [`../../../../docs/guides/new-project-setup.md`](../../../../docs/guides/new-project-setup.md)
+- [`../../../../docs/guides/fork-an-exemplar.md`](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/guides/fork-an-exemplar.md)
+- [`../../../../docs/guides/new-project-setup.md`](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/guides/new-project-setup.md)
