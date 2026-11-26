@@ -89,7 +89,9 @@ def test_figure_registry_validates_manuscript_references(tmp_path: Path, copy_pr
     paths = write_all_figures(project)
     registry = project / "output" / "figures" / "figure_registry.json"
 
-    ok, issues = validate_figure_registry(registry, project / "manuscript")
+    ok, issues = validate_figure_registry(
+        registry, project / "docs" / "manuscript", require_accessibility=True
+    )
 
     assert registry in paths
     assert ok, issues

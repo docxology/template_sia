@@ -31,13 +31,14 @@ flowchart TB
   LR --> CL
   LOOP --> TASK
   LR -->|live=False| FIX[src/fixtures/]
-  LR -->|live=True| LLM[infrastructure/llm]
+  LR -->|live=True| REF
+  LR -.->|configured feedback model| LLM[infrastructure/llm]
 ```
 
 | Layer | Location | Owns |
 | --- | --- | --- |
 | Layer 1 | `infrastructure/sia/` | Task validation, evaluation subprocess, context ledger, generation state machine |
-| Layer 2 | `projects/templates/template_sia/src/` | Project config, fixture paths, `RunConfig` adapter, project artifact orchestration, manuscript variables, task-specific reference agent |
+| Layer 2 | `src/` | Project config, fixture paths, `RunConfig` adapter, project artifact orchestration, manuscript variables, task-specific reference agent |
 | CLI | `scripts/` | Parse `--project-root` / `--live-sia`, call `src.loop.run_sia_loop_project()`, and print output paths |
 
 ## Generation artifact tree

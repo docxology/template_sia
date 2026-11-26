@@ -14,7 +14,7 @@ bootstrap import paths, parse flags, and delegate.
 ## `run_sia_loop.py`
 
 Runs one full loop: loads settings from the `project_config.sia` block of the
-project `config.yaml` (defaults apply when absent), replays recorded fixtures
+project `docs/manuscript/config.yaml` (defaults apply when absent), replays recorded fixtures
 by default, then writes derived artifacts.
 
 ```bash
@@ -42,7 +42,7 @@ Outputs:
 
 ## `z_generate_manuscript_variables.py`
 
-Post-analysis token hydration. Fails fast if `output/runs/run_1/run_summary.json`
+Post-analysis token hydration. Fails fast if `output/runs/run_<run_id>/run_summary.json`
 is missing — run `run_sia_loop.py` first.
 
 ```bash

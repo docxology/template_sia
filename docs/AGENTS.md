@@ -46,4 +46,4 @@ grep -r "unittest.mock\|MagicMock\|@patch" projects/templates/template_sia/tests
 
 - [`../AGENTS.md`](../AGENTS.md)
 - [`manuscript/AGENTS.md`](manuscript/AGENTS.md)
-- [`../../../../infrastructure/sia/SKILL.md`](../../../../infrastructure/sia/SKILL.md)
+- [`../../../../infrastructure/sia/SKILL.md`](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/infrastructure/sia/SKILL.md)

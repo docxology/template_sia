@@ -41,6 +41,7 @@ class FigureSpec:
     figure_id: str
     filename: str
     caption: str
+    alt_text: str = ""
 
 
 # NOTE: captions here mirror the canonical captions authored inline in the
@@ -50,11 +51,13 @@ FIGURE_SPECS: tuple[FigureSpec, ...] = (
     FigureSpec(
         figure_id="fig:sia-metric-progression",
         filename="sia_metric_progression.png",
+        alt_text="Line plot of classifier accuracy by generation.",
         caption="SIA metric progression across generations.",
     ),
     FigureSpec(
         figure_id="fig:sia-loop-topology",
         filename="sia_loop_topology.png",
+        alt_text="Diagram connecting the Meta, Target, and Feedback stages with public input and held-out evaluation.",
         caption=(
             "Meta → Target → Feedback loop topology for the SIA harness, "
             "generated programmatically by write_sia_loop_topology."
@@ -63,11 +66,13 @@ FIGURE_SPECS: tuple[FigureSpec, ...] = (
     FigureSpec(
         figure_id="fig:sia-generation-heatmap",
         filename="sia_generation_heatmap.png",
+        alt_text="Heatmap comparing accuracy and held-out sample counts for each generation.",
         caption=("Per-generation metric heatmap showing accuracy and sample count across SIA generations."),
     ),
     FigureSpec(
         figure_id="fig:sia-improvement-delta",
         filename="sia_improvement_delta.png",
+        alt_text="Line plot of consecutive-generation changes in classifier accuracy.",
         caption=(
             "Generation-over-generation metric delta (Δaccuracy) for the SIA fixture replay; "
             "the flat trace confirms threshold robustness and prevents a fabricated improvement claim."
@@ -93,6 +98,7 @@ def write_figure_registry(project_root: Path) -> Path:
                 "label": spec.figure_id,
                 "filename": spec.filename,
                 "caption": spec.caption,
+                "alt_text": spec.alt_text,
                 "generated_by": "src.figures",
             }
             for spec in FIGURE_SPECS

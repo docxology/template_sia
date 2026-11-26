@@ -4,8 +4,8 @@
 
 - **Real artifacts:** Tests read and write JSON, CSV, and markdown under `tmp_path` or the exemplar tree — no mocked filesystem or LLM responses.
 - **Fixture replay default:** `run_sia_loop_project(..., live=False)` is the primary integration path; it must stay deterministic and fast.
-- **Live mode is opt-in:** `@pytest.mark.requires_ollama` tests exercise `--live-sia` when Ollama and `requests` are available; CI skips them via marker expression.
-- **Coverage:** `src/` ≥ 90%. Measured counts live in [`docs/_generated/COUNTS.md`](../../../../docs/_generated/COUNTS.md).
+- **Offline defaults:** The default suite covers replay and local execution of the bundled reference classifier without Ollama. The separate `requires_ollama` test uses model feedback and is excluded by default.
+- **Coverage:** `src/` ≥ 90%. Measured counts live in [`docs/_generated/COUNTS.md`](https://github.com/docxology/template/blob/87704feae0a4490ef7dad9c931d268e8c30273c2/docs/_generated/COUNTS.md).
 
 ## Fixture / live-mode separation (the public-exemplar boundary)
 
@@ -44,12 +44,5 @@ execution in CI.
 
 ## Commands
 
-```bash
-# Default CI-equivalent (from repo root)
-uv run python scripts/pipeline/stage_01_test.py --project templates/template_sia --project-only
-
-# From project directory
-uv run --extra dev pytest tests -m "not requires_ollama" --cov=src --cov-fail-under=90
-```
-
-Infrastructure harness tests: `uv run pytest tests/infra_tests/sia/ -q`
+Run the project coverage gate and task validation with the
+[pinned workspace commands](quickstart.md#verify-and-render).

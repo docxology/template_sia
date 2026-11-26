@@ -15,12 +15,14 @@ for path in (PROJECT_ROOT, PROJECT_ROOT / "src", REPO_ROOT):
 
 from infrastructure.rendering.manuscript_injection import write_resolved_manuscript_tree
 
+from src.loop_config import load_sia_settings
 from src.reports import compute_variables, write_manuscript_variables
 
 
 def main() -> int:
     """CLI entry point."""
-    summary = PROJECT_ROOT / "output" / "runs" / "run_1" / "run_summary.json"
+    run_id = load_sia_settings(PROJECT_ROOT).run_id
+    summary = PROJECT_ROOT / "output" / "runs" / f"run_{run_id}" / "run_summary.json"
     if not summary.is_file():
         raise FileNotFoundError(f"Missing {summary.relative_to(PROJECT_ROOT)} — run scripts/run_sia_loop.py first.")
     variables_path = write_manuscript_variables(PROJECT_ROOT)
