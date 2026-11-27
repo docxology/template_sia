@@ -58,10 +58,9 @@ The harness exposes two validation surfaces:
 
 ## Testing
 
-```bash
-uv run pytest projects/templates/template_sia/tests/ -m "not requires_ollama" -v
-uv run python scripts/pipeline/stage_01_test.py --project templates/template_sia --project-only
-```
+Follow the [standalone quick start](docs/quickstart.md) to register this
+checkout under the pinned runner. Run the project tests from that runner
+using the registered project's `tests/` and `src/` paths.
 
 ## See also
 
